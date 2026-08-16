@@ -1,5 +1,7 @@
 package apiserver
 
+import "github.com/sirupsen/logrus"
+
 type APIServer struct {
 	config *Config
 	logger *logrus.Logger
