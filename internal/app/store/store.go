@@ -8,8 +8,9 @@ import (
 
 type Store struct {
 	// Add fields for your store here, e.g., database connection, etc.
-	config *Config
-	db     *sql.DB
+	config         *Config
+	db             *sql.DB
+	userRepository *UserRepository
 }
 
 func New(config *Config) *Store {
@@ -36,3 +37,15 @@ func (s *Store) Close() {
 	// Implement any necessary cleanup logic here
 	s.db.Close()
 }
+
+func (s *Store) User() *UserRepository {
+	if s.userRepository != nil {
+		return s.userRepository
+	}
+	s.userRepository = &UserRepository{
+		store: s,
+	}
+	return s.userRepository
+}
+
+//store.User().Create() - for user creation
