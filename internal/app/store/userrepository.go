@@ -21,7 +21,16 @@ func (r *UserRepository) Create(u *model.User) (*model.User, error) {
 }
 
 func (r *UserRepository) FindByEmail(email string) (*model.User, error) {
-	// Implement the logic to find a user by email in the database
-	// For example, you can use r.store.db to execute SQL queries
-	return nil, nil
+	u := &model.User{}
+	if err := r.store.db.QueryRow(
+		"SELECT id, email, encripted_password FROM users WHERE email = $1",
+		email,
+	).Scan(
+		&u.ID,
+		&u.Email,
+		&u.EncriptedPassword,
+	); err != nil {
+		return nil, err
+	}
+	return u, nil
 }
